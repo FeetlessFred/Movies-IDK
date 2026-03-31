@@ -96,16 +96,18 @@
 const input = document.getElementById('searchInput');
 const resultsDiv = document.getElementById('results');
 
+function renderMovies(list) {
+resultsDiv.innerHTML = list.map(movie =>
+`<div class='movie'><div class='title'>${movie.title}</div><div class='description'>${movie.description}</div></div>`
+).join('');
+}
+
+renderMovies(movies);
+
 input.addEventListener('input', () => {
 const query = input.value.toLowerCase();
 const filtered = movies.filter(movie => movie.title.toLowerCase().includes(query) || movie.description.toLowerCase().includes(query));
-
-```
-resultsDiv.innerHTML = filtered.map(movie => 
-  `<div class='movie'><div class='title'>${movie.title}</div><div class='description'>${movie.description}</div></div>`
-).join('');
-```
-
+renderMovies(filtered);
 }); </script>
 
 </body>
