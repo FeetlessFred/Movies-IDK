@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movie Search</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  input { padding: 10px; width: 300px; margin-bottom: 20px; }
+  .movie { margin-bottom: 15px; }
+  .title { font-weight: bold; font-size: 1.2em; }
+  .description { margin-left: 10px; }
+</style>
+</head>
+<body>
+<h1>Movie Search</h1>
+<input type="text" id="searchInput" placeholder="Search movies..." />
+<div id="results"></div>
+<script>
+  const movies = [
+    { title: "The Godfather", description: "An organized crime dynasty's aging patriarch transfers control of his clandestine empire to his reluctant son." },
+    { title: "Pulp Fiction", description: "The lives of two mob hitmen, a boxer, a gangster's wife, and a pair of diner bandits intertwine in four tales of violence and redemption." },
+    { title: "The Dark Knight", description: "Batman faces the Joker, a criminal mastermind who wants to plunge Gotham City into anarchy." },
+    { title: "Inception", description: "A thief who steals corporate secrets through dream-sharing technology is given a chance to erase his criminal record by planting an idea in someone's mind." },
+    { title: "Forrest Gump", description: "The presidencies, historical events, and cultural changes seen through the eyes of Forrest Gump, a man with a low IQ but good intentions." },
+    { title: "Fight Club", description: "An insomniac office worker and a soapmaker form an underground fight club that evolves into something much more." },
+    { title: "The Matrix", description: "A computer hacker learns about the true nature of reality and his role in the war against its controllers." },
+    { title: "Gladiator", description: "A former Roman General seeks revenge against the corrupt emperor who murdered his family and sent him into slavery." },
+    { title: "Titanic", description: "A young couple falls in love aboard the ill-fated RMS Titanic, whose maiden voyage ends in tragedy." },
+    { title: "The Shawshank Redemption", description: "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency." },
+    { title: "Jurassic Park", description: "Scientists clone dinosaurs to populate a theme park which quickly spirals out of control when the creatures escape." },
+    { title: "Star Wars: Episode IV - A New Hope", description: "Luke Skywalker joins forces with a Jedi, a princess, and rebels to fight the evil Galactic Empire." },
+    { title: "The Lord of the Rings: The Fellowship of the Ring", description: "A hobbit, Frodo, embarks on a perilous journey to destroy the One Ring and save Middle-earth from evil." },
+    { title: "The Lion King", description: "Simba, a young lion prince, flees his kingdom after the murder of his father and returns to reclaim his throne." },
+    { title: "Back to the Future", description: "Teenager Marty McFly accidentally travels back in time and must ensure his parents fall in love or risk erasing his own existence." },
+    { title: "Avatar", description: "A paraplegic marine is sent to Pandora, a lush alien world, where he must choose between his human mission and the native Na'vi people." },
+    { title: "The Avengers", description: "Earth's mightiest heroes assemble to stop Loki and his alien army from enslaving humanity." },
+    { title: "Toy Story", description: "A group of toys comes to life when humans aren't around, led by Woody and Buzz Lightyear." },
+    { title: "The Silence of the Lambs", description: "A young FBI cadet seeks the advice of imprisoned cannibal Dr. Hannibal Lecter to catch another serial killer." },
+    { title: "Saving Private Ryan", description: "Following the Normandy invasion, a group of U.S. soldiers go behind enemy lines to retrieve a paratrooper whose brothers have been killed in action." },
+    { title: "Schindler's List", description: "The true story of Oskar Schindler, who saved over a thousand Jews during the Holocaust." },
+    { title: "Interstellar", description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival." },
+    { title: "Django Unchained", description: "A freed slave teams up with a bounty hunter to rescue his wife from a brutal plantation owner." },
+    { title: "The Departed", description: "An undercover cop and a mole in the police attempt to identify each other while infiltrating an Irish gang in Boston." },
+    { title: "Braveheart", description: "William Wallace leads a rebellion against the oppressive English rule in Scotland." },
+    { title: "The Social Network", description: "The story of Mark Zuckerberg and the founding of Facebook, and the legal battles that followed." },
+    { title: "The Wolf of Wall Street", description: "The rise and fall of Jordan Belfort, a stockbroker who engages in corruption and fraud on Wall Street." },
+    { title: "Mad Max: Fury Road", description: "In a post-apocalyptic wasteland, Max teams up with Furiosa to escape a tyrannical warlord." },
+    { title: "The Grand Budapest Hotel", description: "The adventures of a legendary concierge and his protégé at a famous European hotel between the wars." },
+    { title: "Whiplash", description: "A young drummer enrolls at a music conservatory where an abusive instructor pushes him to the limits of his ability and sanity." },
+    { title: "La La Land", description: "A jazz musician and an aspiring actress fall in love while struggling to pursue their dreams in Los Angeles." },
+    { title: "Parasite", description: "A poor family schemes to infiltrate a wealthy household, leading to a shocking series of events." },
+    { title: "The Revenant", description: "After being left for dead, frontiersman Hugh Glass embarks on a journey of survival and revenge." },
+    { title: "Joker", description: "A failed comedian descends into madness and becomes the infamous criminal mastermind, Joker." },
+    { title: "Avengers: Endgame", description: "The remaining Avengers work to reverse the devastation caused by Thanos in Infinity War." },
+    { title: "Black Panther", description: "T'Challa returns home as king of Wakanda but finds his sovereignty challenged by a formidable enemy." },
+    { title: "Frozen", description: "Princess Anna sets off on a journey to find her sister Elsa, whose icy powers have trapped the kingdom in eternal winter." },
+    { title: "Coco", description: "A young boy dreams of becoming a musician despite his family's ban on music and journeys to the Land of the Dead." },
+    { title: "Moana", description: "A young Polynesian girl sets sail on a daring mission to save her people." },
+    { title: "Zootopia", description: "A rookie bunny cop and a cynical con artist fox work together to uncover a conspiracy in a city of anthropomorphic animals." },
+    { title: "Inside Out", description: "Personified emotions guide a young girl through a difficult transition in her life." },
+    { title: "Shutter Island", description: "A U.S. Marshal investigates a psychiatric facility on an isolated island, uncovering shocking secrets." },
+    { title: "The Prestige", description: "Two rival magicians engage in a bitter competition that leads to obsession, deceit, and tragedy." },
+    { title: "Memento", description: "A man with short-term memory loss uses tattoos and notes to track down his wife's murderer." },
+    { title: "Goodfellas", description: "The rise and fall of mob associate Henry Hill, and his life in the mob spanning three decades." },
+    { title: "Se7en", description: "Two detectives hunt a serial killer who uses the seven deadly sins as his modus operandi." },
+    { title: "The Truman Show", description: "A man discovers his entire life is a reality TV show and struggles to break free." },
+    { title: "Gone Girl", description: "A man becomes the prime suspect when his wife mysteriously disappears on their fifth wedding anniversary." },
+    { title: "Birdman", description: "A washed-up actor, famous for playing a superhero, struggles to mount a Broadway play while battling his ego and personal demons." },
+    { title: "The Imitation Game", description: "Alan Turing and his team of codebreakers work to decrypt German intelligence during World War II." },
+    { title: "Dunkirk", description: "Allied soldiers are evacuated from the beaches of Dunkirk while under attack from the German army." },
+    { title: "1917", description: "Two British soldiers are tasked with delivering a message to save a battalion from walking into a trap during World War I." },
+    { title: "Blade Runner 2049", description: "A young blade runner unearths long-buried secrets that could plunge society into chaos." },
+    { title: "Gravity", description: "Two astronauts struggle to survive after their shuttle is destroyed in orbit." },
+    { title: "The Martian", description: "An astronaut is stranded on Mars and must use his ingenuity to survive until rescue." },
+    { title: "A Beautiful Mind", description: "The life of John Nash, a brilliant mathematician who struggles with schizophrenia while making groundbreaking contributions to game theory." },
+    { title: "The Pianist", description: "A Polish Jewish musician struggles to survive the destruction of the Warsaw ghetto during World War II." },
+    { title: "Slumdog Millionaire", description: "A Mumbai teen reflects on his life after being accused of cheating on the Indian version of Who Wants to Be a Millionaire?" },
+    { title: "The Hateful Eight", description: "Eight strangers seek refuge from a blizzard but slowly realize not everyone will make it out alive." },
+    { title: "Logan", description: "In a future where mutants are nearly extinct, an aging Wolverine protects a young mutant from dark forces." },
+    { title: "Deadpool", description: "A former special forces operative becomes the wisecracking, fourth-wall-breaking antihero Deadpool after an experiment leaves him with accelerated healing powers." },
+    { title: "Guardians of the Galaxy", description: "A group of intergalactic criminals must work together to stop a fanatical warrior from taking control of the universe." },
+    { title: "Doctor Strange", description: "A surgeon learns the mystic arts after a car accident ends his medical career and discovers a hidden world of magic and alternate dimensions." },
+    { title: "Thor: Ragnarok", description: "Thor must escape from the planet Sakaar and prevent Ragnarok, the destruction of Asgard, at the hands of Hela." },
+    { title: "Iron Man", description: "A billionaire industrialist and genius engineer creates a powered suit of armor to fight evil and protect the world." },
+    { title: "Captain America: Civil War", description: "Political interference in the Avengers' activities causes a rift between former allies Captain America and Iron Man." },
+    { title: "Wonder Woman", description: "Diana, princess of the Amazons, leaves her home to fight in World War I and discovers her full powers." },
+    { title: "Aquaman", description: "Arthur Curry, the heir to the underwater kingdom of Atlantis, must step forward to prevent war between the worlds of land and sea." },
+    { title: "Justice League", description: "Batman and Wonder Woman assemble a team of superheroes to save the world from an impending threat." },
+    { title: "Man of Steel", description: "Clark Kent learns about his alien origins and becomes Superman, battling a powerful enemy threatening Earth." },
+    { title: "Spider-Man: Homecoming", description: "Peter Parker balances high school life with being Spider-Man and facing the villain Vulture." },
+    { title: "Spider-Man: No Way Home", description: "Peter Parker confronts the consequences of his identity being revealed, leading to a multiverse crisis." }
+  ];
+
+const input = document.getElementById('searchInput');
+const resultsDiv = document.getElementById('results');
+
+input.addEventListener('input', () => {
+const query = input.value.toLowerCase();
+const filtered = movies.filter(movie => movie.title.toLowerCase().includes(query) || movie.description.toLowerCase().includes(query));
+
+```
+resultsDiv.innerHTML = filtered.map(movie => 
+  `<div class='movie'><div class='title'>${movie.title}</div><div class='description'>${movie.description}</div></div>`
+).join('');
+```
+
+}); </script>
+
+</body>
+</html>
